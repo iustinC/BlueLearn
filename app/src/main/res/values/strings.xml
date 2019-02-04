@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">BlueLearn</string>
+
+    <string name="createAccount">Create an account</string>
+    <string name="signIn">Sign in</string>
+    <string name="quickChallenge">Quick Challenge</string>
+    <string name="register">Register</string>
 </resources>
