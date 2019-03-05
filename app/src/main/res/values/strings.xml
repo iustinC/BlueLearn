@@ -5,4 +5,11 @@
     <string name="signIn">Sign in</string>
     <string name="quickChallenge">Quick Challenge</string>
     <string name="register">Register</string>
+
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id">146627466244200</string>
+    <string name="fb_login_protocol_scheme">fb146627466244200</string>
+
+    <!-- GOOGLE -->
+    <string name="googleLoginButton">Login with Google</string>
 </resources>
