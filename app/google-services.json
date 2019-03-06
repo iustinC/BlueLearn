@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "577668347233",
+    "firebase_url": "https://bluelearn-7fa03.firebaseio.com",
+    "project_id": "bluelearn-7fa03",
+    "storage_bucket": "bluelearn-7fa03.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:577668347233:android:9d7d0da0de11938c",
+        "android_client_info": {
+          "package_name": "com.example.iustin.bluelearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "577668347233-oc4qulmpf7jjus5bc4fcas0s3u2v20sa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.iustin.bluelearn",
+            "certificate_hash": "09f5c207b12828c272700121e25cede381f5e17b"
+          }
+        },
+        {
+          "client_id": "577668347233-tbgmtoteoptqe6hl4grrte8ufjs9teab.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFysoagm4PWSkd574GosIRVCDEFpTOCc0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "577668347233-tbgmtoteoptqe6hl4grrte8ufjs9teab.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
