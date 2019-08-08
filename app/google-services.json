@@ -15,11 +15,11 @@
       },
       "oauth_client": [
         {
-          "client_id": "577668347233-oc4qulmpf7jjus5bc4fcas0s3u2v20sa.apps.googleusercontent.com",
+          "client_id": "577668347233-41rndkl34kb2rldsvko4p1tafidcsr63.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.iustin.bluelearn",
-            "certificate_hash": "09f5c207b12828c272700121e25cede381f5e17b"
+            "certificate_hash": "6923ec90c03a59e0c8ba6ab3e7bbcf37fb802ca9"
           }
         },
         {
@@ -33,20 +33,13 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "577668347233-tbgmtoteoptqe6hl4grrte8ufjs9teab.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }

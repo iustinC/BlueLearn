@@ -27,6 +27,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
 
     public static class MenuViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
+
         public MenuViewHolder(TextView v) {
             super(v);
             textView = v;

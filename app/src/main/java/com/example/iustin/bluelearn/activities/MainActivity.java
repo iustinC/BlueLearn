@@ -5,17 +5,21 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.iustin.bluelearn.R;
 
-import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.btnRegister) Button btnRegister;
-    @BindView(R.id.btnSignIn) Button btnSignIn;
-    @BindView(R.id.btnQuickChallenge) Button btnQuickChallenge;
+    @BindView(R.id.btnRegister)
+    Button btnRegister;
+    @BindView(R.id.btnSignIn)
+    Button btnSignIn;
+    @BindView(R.id.btnQuickChallenge)
+    Button btnQuickChallenge;
 
     private View.OnClickListener registerOnClickHandler = v -> {
         Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
@@ -28,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private View.OnClickListener quickChallengeOnClickHandler = v -> {
-
+        Intent intent = new Intent(this, QuizActivity.class);
+        startActivity(intent);
     };
 
     @Override
