@@ -43,6 +43,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+
+    //TODO:REMOVE COMMENTED FOR AUTHENTIFICATION CHECK MAIL
     public void login(final View view) {
         final EditText emailEditTxt = findViewById(R.id.editTxtUsername);
         final EditText passwordEditTxt = findViewById(R.id.editTxtPassword);

@@ -13,6 +13,7 @@
         android:text="Choose difficulty" />
 
     <RadioGroup
+        android:id="@+id/btnDifficultyGroup"
         android:layout_width="118dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="150dp"
@@ -36,6 +37,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Hard" />
+
+        <RadioButton
+            android:id="@+id/btnRadioRandom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Random" />
     </RadioGroup>
 
     <Button

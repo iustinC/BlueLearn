@@ -4,7 +4,7 @@ import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.iustin.bluelearn.R;
@@ -20,21 +21,18 @@ import com.example.iustin.bluelearn.adapters.QuestionFragmentAdapter;
 import com.example.iustin.bluelearn.domain.DifficultyType;
 import com.example.iustin.bluelearn.domain.Question;
 import com.example.iustin.bluelearn.domain.QuestionType;
+import com.example.iustin.bluelearn.fragments.DifficultyFragment;
 import com.example.iustin.bluelearn.fragments.QuestionFragment;
 import com.example.iustin.bluelearn.repository.QuestionsRepository;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class QuizActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, QuestionFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, QuestionFragment.OnFragmentInteractionListener,
+                    DifficultyFragment.OnFragmentInteractionListener{
 
     private static final String TAG = QuizActivity.class.getName();
 
@@ -59,14 +57,22 @@ public class QuizActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        setupEnvironment();
-        questionsRepository.getDatabase().child("/easy").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.EASY, QuestionType.CHOICE_ANSWER));
-        questionsRepository.getDatabase().child("/medium").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.MEDIUM, QuestionType.CHOICE_ANSWER));
-        questionsRepository.getDatabase().child("/hard").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.HARD, QuestionType.CHOICE_ANSWER));
+        chooseDifficulty();
+        }
+
+    private void chooseDifficulty() {
+        DifficultyFragment difficultyFragment = new DifficultyFragment();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.difficulty_fragment, difficultyFragment).commit();
     }
 
-    private void setupEnvironment() {
+    public void startQuiz() {
+        questionsRepository.getDatabase().child("/easy").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.Easy, QuestionType.CHOICE_ANSWER));
+        questionsRepository.getDatabase().child("/medium").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.Medium, QuestionType.CHOICE_ANSWER));
+        questionsRepository.getDatabase().child("/hard").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.Hard, QuestionType.CHOICE_ANSWER));
+
         txtTimer = (TextView) findViewById(R.id.txtTimer);
         txtTimer.setVisibility(View.VISIBLE);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -87,6 +93,71 @@ public class QuizActivity extends AppCompatActivity
         QuestionFragmentAdapter questionFragmentAdapter = new QuestionFragmentAdapter(getSupportFragmentManager(), this, Utils.listFramgments);
         viewPager.setAdapter(questionFragmentAdapter);
         tabLayout.setupWithViewPager(viewPager);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
+            int SCROLLING_RIGHT = 0;
+            int SCROLLING_LEFT = 1;
+            int SCROLLING_UNDETERMINED = 2;
+
+            int currentScrollDirection = 2;
+
+            private void setScrollingDirection(float positionOffset) {
+                if (1 - positionOffset >= 0.5) {
+                    this.currentScrollDirection = SCROLLING_RIGHT;
+                } else if (1 - positionOffset <= 0.5) {
+                    this.currentScrollDirection = SCROLLING_LEFT;
+                }
+            }
+
+            private boolean isScrollDirectionUndetermined() {
+                return currentScrollDirection == SCROLLING_UNDETERMINED;
+            }
+
+            private boolean isScrollDirectionRight() {
+                return currentScrollDirection == SCROLLING_RIGHT;
+            }
+
+            private boolean isScrollDirectionLeft() {
+                return currentScrollDirection == SCROLLING_LEFT;
+            }
+
+
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (!isScrollDirectionUndetermined()) {
+                    setScrollingDirection(positionOffset);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                QuestionFragment questionFragment;
+                int currentPosition = 0;
+
+                if (position > 0) {
+                    if (isScrollDirectionRight()) {
+                        questionFragment = Utils.listFramgments.get(position - 1);
+                        currentPosition = position - 1;
+                    } else if (isScrollDirectionLeft()) {
+                        questionFragment = Utils.listFramgments.get(position + 1);
+                        currentPosition = position +1;
+                    } else {
+                        questionFragment = Utils.listFramgments.get(currentPosition);
+                    }
+                } else {
+                    questionFragment = Utils.listFramgments.get(0);
+                    currentPosition = 0;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    this.currentScrollDirection = SCROLLING_UNDETERMINED;
+                }
+            }
+        });
     }
 
     public void stopLoadingScreen() {
@@ -143,6 +214,16 @@ public class QuizActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.quiz, menu);
+        return true;
+    }
+
+    private void finishGame() {
+        int position = viewPager.getCurrentItem();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -151,10 +232,21 @@ public class QuizActivity extends AppCompatActivity
                 new MaterialStyledDialog.Builder(this)
                         .setTitle("Finish game?")
                         .setIcon(R.drawable.ic_videogame_asset_black_24dp)
-                        .
+                        .setDescription("Are you sure you want to finish the game?")
+                        .setPositiveText("Yes, totally")
+                        .setNegativeText("No")
+                        .onNegative((dialog, which) -> {
+                            dialog.dismiss();
+                        })
+                        .onPositive((dialog, which) -> {
+                            dialog.dismiss();
+                            finishGame();
+                        })
+                        .show();
 
             }
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
