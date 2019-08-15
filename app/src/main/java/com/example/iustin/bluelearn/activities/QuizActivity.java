@@ -1,6 +1,7 @@
 package com.example.iustin.bluelearn.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -220,7 +221,11 @@ public class QuizActivity extends AppCompatActivity
     }
 
     private void finishGame() {
-        int position = viewPager.getCurrentItem();
+        Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
+        Utils.timer = Utils.TIME_FOR_QUIZ - timerDuration;
+        Utils.NO_ANSWER_COUNT = questionsRepository.getCurrentQuestions().size() - (Utils.CORRECT_ANSWER_COUNT + Utils.WRONG_ANSWER_COUNT);
+
+        startActivity(intent);
     }
 
     @Override

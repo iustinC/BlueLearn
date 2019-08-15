@@ -15,6 +15,10 @@ public class Utils {
     public static int TIME_FOR_QUIZ = 20 * 60 * 1000;
     public static CountDownTimer TIMER;
 
+    public static int timer = 0;
+    public static int NO_ANSWER_COUNT = 0;
+    public static StringBuilder data_question = new StringBuilder();
+
     public static List<QuestionFragment> listFramgments = new ArrayList<>();
     public static Set<String> selectedValues = new TreeSet<>();
 
