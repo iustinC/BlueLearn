@@ -89,7 +89,7 @@ public class ResultActivity extends AppCompatActivity {
         adapter = new ResultGridAdapter(this, Utils.currentQuestions);
         recycler_result.setAdapter(adapter);
 
-        txt_timer.setText(String.format("02d:02d",
+        txt_timer.setText(String.format("%02d:%02d",
                 TimeUnit.MILLISECONDS.toMinutes(Utils.timer),
                 (TimeUnit.MILLISECONDS.toSeconds(Utils.timer) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(Utils.timer)))));
         txt_right_answer.setText(new StringBuilder("").append(Utils.CORRECT_ANSWER_COUNT).append("/").append(Utils.currentQuestions.size()));

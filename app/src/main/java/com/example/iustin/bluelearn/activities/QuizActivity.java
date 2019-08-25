@@ -181,7 +181,7 @@ public class QuizActivity extends AppCompatActivity
                             TimeUnit.MILLISECONDS.toMinutes(l),
                             TimeUnit.MILLISECONDS.toSeconds(l) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l))));
 
-                    timerDuration -= 10000;
+                    timerDuration -= 1000;
                 }
 
                 @Override
@@ -198,7 +198,7 @@ public class QuizActivity extends AppCompatActivity
                             TimeUnit.MILLISECONDS.toMinutes(l),
                             TimeUnit.MILLISECONDS.toSeconds(l) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(l))));
 
-                    timerDuration -= 10000;
+                    timerDuration -= 1000;
                 }
 
                 @Override
