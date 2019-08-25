@@ -3,22 +3,24 @@ package com.example.iustin.bluelearn.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.example.iustin.bluelearn.R;
 import com.example.iustin.bluelearn.Utils;
 import com.example.iustin.bluelearn.domain.Question;
+import com.example.iustin.bluelearn.domain.QuestionType;
 import com.example.iustin.bluelearn.repository.QuestionsRepository;
 
 /**
@@ -38,6 +40,7 @@ public class QuestionFragment extends Fragment {
     CheckBox checkbox2;
     CheckBox checkbox3;
     CheckBox checkbox4;
+    EditText answer_text;
     FrameLayout layout_image;
     ProgressBar progressBar;
     Question question;
@@ -93,65 +96,100 @@ public class QuestionFragment extends Fragment {
         layout_image = (FrameLayout) intentview.findViewById(R.id.layout_image);
         layout_image.setVisibility(View.GONE);
 
+
+
         if (question != null) {
             progressBar = (ProgressBar) intentview.findViewById(R.id.progress_bar);
             txt_question_statement = (TextView) intentview.findViewById(R.id.txt_question_statement);
             txt_question_statement.setText(question.getStatement());
 
+            answer_text = (EditText) intentview.findViewById(R.id.answer_text);
             checkbox1 = (CheckBox) intentview.findViewById(R.id.checkbox1);
-            checkbox1.setText(question.getAnswer1());
-            checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) {
-                        Utils.selectedValues.add(checkbox1.getText().toString());
-                    } else {
-                        Utils.selectedValues.remove(checkbox1.getText().toString());
-                    }
-                }
-            });
-
             checkbox2 = (CheckBox) intentview.findViewById(R.id.checkbox2);
-            checkbox2.setText(question.getAnswer2());
-            checkbox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) {
-                        Utils.selectedValues.add(checkbox2.getText().toString());
-                    } else {
-                        Utils.selectedValues.remove(checkbox2.getText().toString());
-                    }
-                }
-            });
-
             checkbox3 = (CheckBox) intentview.findViewById(R.id.checkbox3);
-            checkbox3.setText(question.getAnswer3());
-            checkbox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) {
-                        Utils.selectedValues.add(checkbox3.getText().toString());
-                    } else {
-                        Utils.selectedValues.remove(checkbox3.getText().toString());
-                    }
-                }
-            });
-
-
             checkbox4 = (CheckBox) intentview.findViewById(R.id.checkbox4);
-            checkbox4.setText(question.getAnswer4());
-            checkbox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (b) {
-                        Utils.selectedValues.add(checkbox4.getText().toString());
-                    } else {
-                        Utils.selectedValues.remove(checkbox4.getText().toString());
+
+            if (QuestionType.TEXT_ANSWER.equals(question.getQuestionType())) {
+                checkbox1.setVisibility(View.GONE);
+                checkbox2.setVisibility(View.GONE);
+                checkbox3.setVisibility(View.GONE);
+                checkbox4.setVisibility(View.GONE);
+
+
+                answer_text.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
                     }
-                }
-            });
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        if (Utils.selectedValues.containsKey(question.getId().toString())){
+                            Utils.selectedValues.remove(question.getId().toString());
+                        }
+                        Utils.selectedValues.put(question.getId().toString(), answer_text.getText().toString());
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+
+                    }
+                });
+
+            } else {
+                answer_text.setVisibility(View.GONE);
+
+                checkbox1.setText(question.getAnswer1());
+                checkbox1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (b) {
+                            Utils.selectedValues.put(question.getId().toString(),checkbox1.getText().toString());
+                        } else {
+                            Utils.selectedValues.removeMapping(question.getId().toString(),checkbox1.getText().toString());
+                        }
+                    }
+                });
 
 
+                checkbox2.setText(question.getAnswer2());
+                checkbox2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (b) {
+                            Utils.selectedValues.put(question.getId().toString(), checkbox2.getText().toString());
+                        } else {
+                            Utils.selectedValues.removeMapping(question.getId().toString(), checkbox2.getText().toString());
+                        }
+                    }
+                });
+
+
+                checkbox3.setText(question.getAnswer3());
+                checkbox3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (b) {
+                            Utils.selectedValues.put(question.getId().toString(), checkbox3.getText().toString());
+                        } else {
+                            Utils.selectedValues.removeMapping(question.getId().toString(), checkbox3.getText().toString());
+                        }
+                    }
+                });
+
+
+                checkbox4.setText(question.getAnswer4());
+                checkbox4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if (b) {
+                            Utils.selectedValues.put(question.getId().toString(),checkbox4.getText().toString());
+                        } else {
+                            Utils.selectedValues.removeMapping(question.getId().toString(),checkbox4.getText().toString());
+                        }
+                    }
+                });
+            }
         }
 
         return intentview;
@@ -194,5 +232,9 @@ public class QuestionFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public int getQuestionIndex() {
+        return questionIndex;
     }
 }

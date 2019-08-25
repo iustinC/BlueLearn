@@ -60,6 +60,12 @@
             android:text="Answer 4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/answer_text"
+            android:hint="Enter your answer here"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -19,9 +19,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.iustin.bluelearn.R;
 import com.example.iustin.bluelearn.Utils;
 import com.example.iustin.bluelearn.adapters.QuestionFragmentAdapter;
-import com.example.iustin.bluelearn.domain.DifficultyType;
-import com.example.iustin.bluelearn.domain.Question;
-import com.example.iustin.bluelearn.domain.QuestionType;
 import com.example.iustin.bluelearn.fragments.DifficultyFragment;
 import com.example.iustin.bluelearn.fragments.QuestionFragment;
 import com.example.iustin.bluelearn.repository.QuestionsRepository;
@@ -43,6 +40,7 @@ public class QuizActivity extends AppCompatActivity
     private TextView txtTimer;
     private ViewPager viewPager;
     private TabLayout tabLayout;
+    private Toolbar toolbar;
     private ProgressDialog dialog;
 
     @Override
@@ -57,8 +55,8 @@ public class QuizActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Choose difficulty");
         setSupportActionBar(toolbar);
         chooseDifficulty();
         }
@@ -70,10 +68,7 @@ public class QuizActivity extends AppCompatActivity
     }
 
     public void startQuiz() {
-        questionsRepository.getDatabase().child("/easy").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.Easy, QuestionType.CHOICE_ANSWER));
-        questionsRepository.getDatabase().child("/medium").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.Medium, QuestionType.CHOICE_ANSWER));
-        questionsRepository.getDatabase().child("/hard").child("/1").setValue(new Question(1,"Intrebare?", "r1", "r2", "r3", "r4", "rc", DifficultyType.Hard, QuestionType.CHOICE_ANSWER));
-
+        toolbar.setTitle("Good luck");
         txtTimer = (TextView) findViewById(R.id.txtTimer);
         txtTimer.setVisibility(View.VISIBLE);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -84,7 +79,7 @@ public class QuizActivity extends AppCompatActivity
         dialog.setCancelable(false);
         dialog.setInverseBackgroundForced(false);
         dialog.show();
-        questionsRepository.getRandomQuestions(10);
+        questionsRepository.loadQuestions();
 
     }
 
@@ -224,7 +219,6 @@ public class QuizActivity extends AppCompatActivity
         Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
         Utils.timer = Utils.TIME_FOR_QUIZ - timerDuration;
         Utils.NO_ANSWER_COUNT = questionsRepository.getCurrentQuestions().size() - (Utils.CORRECT_ANSWER_COUNT + Utils.WRONG_ANSWER_COUNT);
-
         startActivity(intent);
     }
 

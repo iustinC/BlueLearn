@@ -2,7 +2,9 @@ package com.example.iustin.bluelearn.repository;
 
 import androidx.annotation.NonNull;
 
+import com.example.iustin.bluelearn.Utils;
 import com.example.iustin.bluelearn.activities.QuizActivity;
+import com.example.iustin.bluelearn.domain.DifficultyType;
 import com.example.iustin.bluelearn.domain.Question;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -11,15 +13,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 public class QuestionsRepository {
 
 
     private static final String TAG = QuestionsRepository.class.getName();
-
-    private static List<Question> currentQuestions;
 
     private DatabaseReference database;
 
@@ -29,51 +31,75 @@ public class QuestionsRepository {
         database = FirebaseDatabase.getInstance().getReference().child("/questions");
     }
 
-    public QuestionsRepository(List<Question> currentQuestions) {
-        this.currentQuestions = currentQuestions;
-    }
-
     public QuestionsRepository(QuizActivity quizActivity) {
         this.quizActivity = quizActivity;
     }
 
-    public void getRandomQuestions(int numberOfQuestions) {
+    public void loadQuestions() {
         List<Question> result = new ArrayList<>();
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int countEasyQuestions = new Random().nextInt(numberOfQuestions);
-                int countMediumQuestions =  new Random().nextInt( numberOfQuestions - countEasyQuestions);
-                int countHardQuestions = numberOfQuestions - countMediumQuestions - countEasyQuestions;
+                int countEasyQuestions = DifficultyType.Random.equals(Utils.selectedDifficulty) ? new Random().nextInt(Utils.DEFAULT_QUESTIONS_COUNT) : Utils.DEFAULT_QUESTIONS_COUNT;
+                int countMediumQuestions =  DifficultyType.Random.equals(Utils.selectedDifficulty) ? new Random().nextInt( Utils.DEFAULT_QUESTIONS_COUNT - countEasyQuestions) : Utils.DEFAULT_QUESTIONS_COUNT;
+                int countHardQuestions = DifficultyType.Random.equals(Utils.selectedDifficulty) ? Utils.DEFAULT_QUESTIONS_COUNT - countMediumQuestions - countEasyQuestions : Utils.DEFAULT_QUESTIONS_COUNT;
+                Set<Question> easyQuestions = new HashSet<>();
+                Set<Question> mediumQuestions = new HashSet<>();
+                Set<Question> hardQuestions = new HashSet<>();
 
-                List<Question> easyQuestions = new ArrayList<>();
-                for(DataSnapshot data : dataSnapshot.child("/easy").getChildren()) {
-                    easyQuestions.add(data.getValue(Question.class));
+                switch (Utils.selectedDifficulty){
+                    case Random:
+                        for(DataSnapshot data : dataSnapshot.child("/easy").getChildren()) {
+                            easyQuestions.add(data.getValue(Question.class));
+                        }
+
+                        for(DataSnapshot data : dataSnapshot.child("/medium").getChildren()) {
+                            mediumQuestions.add(data.getValue(Question.class));
+                        }
+
+                        for(DataSnapshot data : dataSnapshot.child("/hard").getChildren()) {
+                            hardQuestions.add(data.getValue(Question.class));
+                        }
+
+                        for (int i = 0; i < countEasyQuestions ; i++) {
+                            result.add(easyQuestions.iterator().next());
+                        }
+
+                        for (int i = 0; i < countHardQuestions ; i++) {
+                            result.add(hardQuestions.iterator().next());
+                        }
+
+                        for (int i = 0; i < countMediumQuestions ; i++) {
+                            result.add(mediumQuestions.iterator().next());
+                        }
+                        break;
+                    case Easy:
+                        for(DataSnapshot data : dataSnapshot.child("/easy").getChildren()) {
+                            easyQuestions.add(data.getValue(Question.class));
+                        }
+
+                        result.addAll(easyQuestions);
+
+                        break;
+                    case Medium:
+                        for(DataSnapshot data : dataSnapshot.child("/medium").getChildren()) {
+                            mediumQuestions.add(data.getValue(Question.class));
+                        }
+
+                       result.addAll(mediumQuestions);
+
+                        break;
+                    case Hard:
+                        for(DataSnapshot data : dataSnapshot.child("/hard").getChildren()) {
+                            hardQuestions.add(data.getValue(Question.class));
+                        }
+
+                        result.addAll(hardQuestions);
+
+                        break;
                 }
 
-                List<Question> mediumQuestions = new ArrayList<>();
-                for(DataSnapshot data : dataSnapshot.child("/medium").getChildren()) {
-                    mediumQuestions.add(data.getValue(Question.class));
-                }
-
-                List<Question> hardQuestions = new ArrayList<>();
-                for(DataSnapshot data : dataSnapshot.child("/hard").getChildren()) {
-                    hardQuestions.add(data.getValue(Question.class));
-                }
-
-                for (int i = 0; i < countEasyQuestions ; i++) {
-                    result.add(easyQuestions.get(easyQuestions.size() == 1 ?  0 : new Random().nextInt(easyQuestions.size())));
-                }
-
-                for (int i = 0; i < countHardQuestions ; i++) {
-                    result.add(hardQuestions.get(hardQuestions.size() == 1 ? 0 : new Random().nextInt(hardQuestions.size())));
-                }
-
-                for (int i = 0; i < countMediumQuestions ; i++) {
-                    result.add(mediumQuestions.get(mediumQuestions.size() == 1 ? 0 : new Random().nextInt(mediumQuestions.size())));
-                }
-
-                currentQuestions = result;
+                Utils.currentQuestions = result;
                 quizActivity.loadData();
                 quizActivity.stopLoadingScreen();
             }
@@ -88,7 +114,7 @@ public class QuestionsRepository {
     }
 
     public static Question getQuestionByIndex(int index) {
-        return currentQuestions.get(index);
+        return Utils.currentQuestions.get(index);
     }
 
     public DatabaseReference getDatabase() {
@@ -100,10 +126,10 @@ public class QuestionsRepository {
     }
 
     public List<Question> getCurrentQuestions() {
-        return currentQuestions;
+        return Utils.currentQuestions;
     }
 
     public void setCurrentQuestions(List<Question> currentQuestions) {
-        this.currentQuestions = currentQuestions;
+        Utils.currentQuestions = currentQuestions;
     }
 }
