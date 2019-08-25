@@ -96,8 +96,6 @@ public class QuestionFragment extends Fragment {
         layout_image = (FrameLayout) intentview.findViewById(R.id.layout_image);
         layout_image.setVisibility(View.GONE);
 
-
-
         if (question != null) {
             progressBar = (ProgressBar) intentview.findViewById(R.id.progress_bar);
             txt_question_statement = (TextView) intentview.findViewById(R.id.txt_question_statement);

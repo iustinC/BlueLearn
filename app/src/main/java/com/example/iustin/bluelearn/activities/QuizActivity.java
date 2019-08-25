@@ -219,6 +219,7 @@ public class QuizActivity extends AppCompatActivity
         Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
         Utils.timer = Utils.TIME_FOR_QUIZ - timerDuration;
         Utils.NO_ANSWER_COUNT = questionsRepository.getCurrentQuestions().size() - (Utils.CORRECT_ANSWER_COUNT + Utils.WRONG_ANSWER_COUNT);
+        Utils.TIMER.cancel();
         startActivity(intent);
     }
 

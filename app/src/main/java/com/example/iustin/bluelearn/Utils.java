@@ -12,7 +12,6 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -44,11 +43,15 @@ public class Utils {
         Utils.CORRECT_ANSWER_COUNT = 0;
         Utils.NO_ANSWER_COUNT = 0;
         for (String key : selectedValues.keySet()) {
-            Question questionById = getQuestionById(Integer.parseInt(key));
-            Collection<String> answers = selectedValues.get(key);
-            String[] correctAnswers = questionById.getRightAnswer().split(",");
+            Question question = getQuestionById(Integer.parseInt(key));
+            Set<String> answers = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+            answers.addAll(selectedValues.get(question.getId().toString()));
+
+            Set<String> correctAnswers = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+            correctAnswers.addAll(Arrays.asList(question.getRightAnswer().split(",")));
+
             boolean correctAnswerForCurrentQuetion = false;
-            if (Arrays.asList(correctAnswers).containsAll(answers)) {
+            if (answers.equals(correctAnswers)) {
                 correctAnswerForCurrentQuetion = true;
             }
             if (correctAnswerForCurrentQuetion) {

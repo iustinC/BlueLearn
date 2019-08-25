@@ -100,11 +100,11 @@ public class ResultActivity extends AppCompatActivity {
         btn_filter_no_answer.setText(new StringBuilder("").append(Utils.currentQuestions.size() - Utils.selectedValues.keySet().size()));
 
         int percent = ((Utils.CORRECT_ANSWER_COUNT * 100) / Utils.currentQuestions.size());
-        if (percent > 90) {
+        if (percent >= 90) {
             txt_result.setText("VERY GOOD");
-        } else if (percent > 60){
+        } else if (percent >= 60){
             txt_result.setText("GOOD");
-        } else if (percent > 40) {
+        } else if (percent >= 40) {
             txt_result.setText("BAD");
         } else {
             txt_result.setText("FAIL");
