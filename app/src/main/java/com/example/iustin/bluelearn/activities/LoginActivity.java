@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.iustin.bluelearn.R;
+import com.example.iustin.bluelearn.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -61,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
 //                                        Toast.LENGTH_LONG).show();
 //                            } else {
                             Intent myIntent = new Intent(LoginActivity.this, MenuActivity.class);
+                            Utils.LOGGED = true;
                             startActivity(myIntent);
                             finish();
 //                            }

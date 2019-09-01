@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.iustin.bluelearn.R;
+import com.example.iustin.bluelearn.Utils;
 import com.example.iustin.bluelearn.domain.ValidationException;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -106,6 +107,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Firebase sign in with google :success");
                         Intent myIntent = new Intent(RegisterActivity.this, MenuActivity.class);
+                        Utils.LOGGED = true;
                         startActivity(myIntent);
                         finish();
                     } else {
@@ -122,6 +124,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 .addOnCompleteListener(this, (@NonNull Task<AuthResult> task) -> {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Firebase facebook sign in :success");
+                        Utils.LOGGED = true;
                     } else {
                         Log.w(TAG, "Firebase facebook sign in :failure", task.getException());
                     }

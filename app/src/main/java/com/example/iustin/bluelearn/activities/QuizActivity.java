@@ -1,11 +1,14 @@
 package com.example.iustin.bluelearn.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentTransaction;
@@ -44,6 +48,9 @@ public class QuizActivity extends AppCompatActivity
     private TabLayout tabLayout;
     private Toolbar toolbar;
     private ProgressDialog dialog;
+    private QuestionFragmentAdapter questionFragmentAdapter;
+
+    private static final int CODE_GET_RESULT = 9999;
 
     @Override
     protected void onDestroy() {
@@ -88,11 +95,11 @@ public class QuizActivity extends AppCompatActivity
     public void loadData() {
         genFragmentList();
 
-        QuestionFragmentAdapter questionFragmentAdapter = new QuestionFragmentAdapter(getSupportFragmentManager(), this, Utils.listFramgments);
+        questionFragmentAdapter = new QuestionFragmentAdapter(getSupportFragmentManager(), this, Utils.listFramgments);
+
         viewPager.setAdapter(questionFragmentAdapter);
+        viewPager.setOffscreenPageLimit(Utils.listFramgments.size());
         tabLayout.setupWithViewPager(viewPager);
-
-
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
@@ -169,6 +176,9 @@ public class QuizActivity extends AppCompatActivity
     }
 
     private void genFragmentList() {
+        if (!Utils.listFramgments.isEmpty()) {
+            Utils.listFramgments.clear();
+        }
         for (int i = 0 ; i < questionsRepository.getCurrentQuestions().size() ; i++) {
             Bundle bundle = new Bundle();
             bundle.putInt("index", i);
@@ -225,15 +235,16 @@ public class QuizActivity extends AppCompatActivity
     private void finishGame() {
         Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
         Utils.timer = Utils.TIME_FOR_QUIZ - timerDuration;
-        Utils.NO_ANSWER_COUNT = questionsRepository.getCurrentQuestions().size() - (Utils.CORRECT_ANSWER_COUNT + Utils.WRONG_ANSWER_COUNT);
-        Utils.TIMER.cancel();
-        startActivity(intent);
+        startActivityForResult(intent, CODE_GET_RESULT);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+
+        //TODO: IF U PRESS FINISH ON ANSWERMODEVIEW GET BACK TO THE MENU
         if (id == R.id.menu_finish_game) {
             if (!isAnswerModeView) {
                 new MaterialStyledDialog.Builder(this)
@@ -247,18 +258,87 @@ public class QuizActivity extends AppCompatActivity
                         })
                         .onPositive((dialog, which) -> {
                             dialog.dismiss();
+                            Utils.checkCurrentForm();
                             finishGame();
                         })
                         .show();
 
+            } else {
+                if (Utils.LOGGED) {
+                    Intent myIntent = new Intent(QuizActivity.this, MenuActivity.class);
+                    startActivity(myIntent);
+                    finish();
+                } else {
+                    Intent myIntent = new Intent(QuizActivity.this, MainActivity.class);
+                    startActivity(myIntent);
+                    finish();
+                }
             }
         }
+
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         return false;
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "====================== ON ACTIVITY RESULT CALLED ====================" + "rc: " + requestCode + " resultcode: " + resultCode + " intent: " + data);
+        if (requestCode == CODE_GET_RESULT) {
+            if (resultCode == Activity.RESULT_OK) {
+                String action = data.getStringExtra("action");
+                if (action == null || TextUtils.isEmpty(action)) {
+                    int questionNumber = data.getIntExtra(Utils.GET_BACK_FROM_RESULT, -1);
+                    viewPager.setCurrentItem(questionNumber);
+
+                    isAnswerModeView = true;
+                    Utils.TIMER.cancel();
+
+                    txtTimer.setVisibility(View.GONE);
+
+                    Log.d(TAG, "ACTION ON QUIZ ACTIVITY");
+                } else {
+                    if (action.equals("viewquizansswer")) {
+                        viewPager.setCurrentItem(0);
+
+                        isAnswerModeView = true;
+                        Utils.TIMER.cancel();
+
+                        txtTimer.setVisibility(View.GONE);
+
+                        for (QuestionFragment questionFragment : Utils.listFramgments) {
+                            questionFragment.showCorrectAnswer();
+                            questionFragment.disableAnswer();
+                        }
+
+                        Log.d(TAG, "view quiz answer ON QUIZ ACTIVITY");
+                    } else if (action.equals("doitagain")) {
+                        viewPager.setCurrentItem(0);
+
+                        isAnswerModeView = false;
+                        countTimer();
+
+                        txtTimer.setVisibility(View.VISIBLE);
+                        Utils.selectedValues.clear();
+
+                        for (QuestionFragment questionFragment : Utils.listFramgments) {
+                            questionFragment.resetQuestion();
+                        }
+
+                        Utils.WRONG_ANSWER_COUNT = 0;
+                        Utils.CORRECT_ANSWER_COUNT = 0;
+                        Utils.NO_ANSWER_COUNT = 0;
+
+                        Log.d(TAG, "do it again ON QUIZ ACTIVITY");
+                    }
+                }
+            }
+        }
     }
 
     @Override

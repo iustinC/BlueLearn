@@ -12,6 +12,7 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -25,6 +26,8 @@ public class Utils {
     public static int TIME_FOR_QUIZ = 20 * 60 * 1000;
     public static CountDownTimer TIMER;
 
+
+    public static boolean LOGGED = false;
     public static int timer = 0;
     public static StringBuilder data_question = new StringBuilder();
 
@@ -62,6 +65,10 @@ public class Utils {
                 WRONG_ANSWER_COUNT++;
             }
         }
+    }
+
+    public static Collection<String> getAnswersOfQuestion(int idOfQuestion) {
+        return selectedValues.get(String.valueOf(idOfQuestion));
     }
 
     public static AnswerType getAnswerOfQuestion(int i, List<Question> questions) {

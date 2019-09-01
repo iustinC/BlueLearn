@@ -51,7 +51,7 @@ public class ResultGridAdapter  extends RecyclerView.Adapter<ResultGridAdapter.M
             img = context.getResources().getDrawable(R.drawable.ic_clear_white_24dp);
             holder.btn_question.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, img);
         } else {
-            holder.btn_question.setBackgroundColor(Color.parseColor("#d3d3d3"));
+            holder.btn_question.setBackgroundColor(Color.parseColor("#87CEFA"));
             img = context.getResources().getDrawable(R.drawable.ic_warning_black_24dp);
             holder.btn_question.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, null, img);
         }

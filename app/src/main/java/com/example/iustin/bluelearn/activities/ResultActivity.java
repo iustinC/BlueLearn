@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import com.example.iustin.bluelearn.R;
 import com.example.iustin.bluelearn.Utils;
 import com.example.iustin.bluelearn.adapters.ResultGridAdapter;
 import com.example.iustin.bluelearn.domain.AnswerType;
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 
 import java.util.concurrent.TimeUnit;
 
@@ -164,6 +167,59 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.result_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_do_quiz_again:
+                doQuizAgain();
+                break;
+            case R.id.menu_view_answer:
+                viewQuizAnswer();
+                break;
+            case android.R.id.home:
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                break;
+        }
+        return true;
+    }
+
+    private void viewQuizAnswer() {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("action", "viewquizansswer");
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
+    }
+
+
+    private void doQuizAgain() {
+        new MaterialStyledDialog.Builder(ResultActivity.this)
+                .setTitle("Do quiz again?")
+                .setIcon(R.drawable.ic_videogame_asset_black_24dp)
+                .setDescription("Do you want to start quiz again?")
+                .setPositiveText("Yes")
+                .setNegativeText("No")
+                .onNegative((dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .onPositive((dialog, which) -> {
+                    dialog.dismiss();
+
+                    Intent returnIntent = new Intent();
+                    returnIntent.putExtra("action", "doitagain");
+                    setResult(Activity.RESULT_OK, returnIntent);
+                    finish();
+                })
+                .show();
     }
 
 }
