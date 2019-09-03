@@ -236,7 +236,10 @@ public class QuizActivity extends AppCompatActivity
         Intent intent = new Intent(QuizActivity.this, ResultActivity.class);
         Utils.timer = Utils.TIME_FOR_QUIZ - timerDuration;
         startActivityForResult(intent, CODE_GET_RESULT);
-
+        for (QuestionFragment listFramgment : Utils.listFramgments) {
+            listFramgment.showCorrectAnswer();
+            listFramgment.disableAnswer();
+        }
     }
 
     @Override
@@ -266,10 +269,12 @@ public class QuizActivity extends AppCompatActivity
             } else {
                 if (Utils.LOGGED) {
                     Intent myIntent = new Intent(QuizActivity.this, MenuActivity.class);
+                    dialog.dismiss();
                     startActivity(myIntent);
                     finish();
                 } else {
                     Intent myIntent = new Intent(QuizActivity.this, MainActivity.class);
+                    dialog.dismiss();
                     startActivity(myIntent);
                     finish();
                 }

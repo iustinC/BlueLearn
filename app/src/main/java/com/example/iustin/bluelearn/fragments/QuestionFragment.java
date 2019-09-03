@@ -132,10 +132,14 @@ public class QuestionFragment extends Fragment implements IQuestion {
 
                     @Override
                     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                        if (Utils.selectedValues.containsKey(question.getId().toString())){
-                            Utils.selectedValues.remove(question.getId().toString());
+                        if (getActivity().getCurrentFocus() == answer_text) {
+                            if (Utils.selectedValues.containsKey(question.getId().toString())){
+                                Utils.selectedValues.remove(question.getId().toString());
+                            }
+                            if (!answer_text.getText().toString().isEmpty()) {
+                                Utils.selectedValues.put(question.getId().toString(), answer_text.getText().toString());
+                            }
                         }
-                        Utils.selectedValues.put(question.getId().toString(), answer_text.getText().toString());
                     }
 
                     @Override
@@ -240,12 +244,13 @@ public class QuestionFragment extends Fragment implements IQuestion {
 
         if (question.getQuestionType() == QuestionType.TEXT_ANSWER) {
             if (answers.equals(correctAnswers)) {
-                answer_text.setText(question.getRightAnswer());
-                answer_text.setTextColor(Color.GREEN);
+                answer_text.setHint(question.getRightAnswer());
+                answer_text.setHintTextColor(Color.GREEN);
             } else {
-                answer_text.setText(question.getRightAnswer());
+                answer_text.setText("");
+                answer_text.setHint(question.getRightAnswer());
                 answer_text.setTypeface(null, Typeface.BOLD);
-                answer_text.setTextColor(Color.RED);
+                answer_text.setHintTextColor(Color.RED);
             }
         } else {
             for (String answer : answers) {
@@ -345,7 +350,9 @@ public class QuestionFragment extends Fragment implements IQuestion {
         } else {
             answer_text.setEnabled(true);
 
-            answer_text.setText("");
+            answer_text.getText().clear();
+            answer_text.setHint("Enter your answer here");
+            answer_text.setHintTextColor(Color.LTGRAY);
             answer_text.setTextColor(Color.BLACK);
         }
     }

@@ -52,6 +52,11 @@ public class LoginActivity extends AppCompatActivity {
 
         String email = emailEditTxt.getText().toString();
         String password = passwordEditTxt.getText().toString();
+        if (email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(LoginActivity.this, "Fields should not be empty.",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
         firebaseAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
