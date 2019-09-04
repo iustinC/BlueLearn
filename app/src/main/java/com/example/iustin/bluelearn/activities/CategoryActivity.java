@@ -23,6 +23,8 @@ public class CategoryActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
+        setTitle("Categories");
+
         recycler_category = (RecyclerView) findViewById(R.id.recycler_category);
         recycler_category.setHasFixedSize(true);
         recycler_category.setLayoutManager(new GridLayoutManager(this, 2));

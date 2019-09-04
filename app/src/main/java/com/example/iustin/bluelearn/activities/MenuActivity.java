@@ -23,6 +23,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
 
         Utils.categoriesNames = new ArrayList<>();
+        Utils.selectedCategory = "";
 
         categoryRepository.loadCategoriesName();
         this.getSupportActionBar().hide();

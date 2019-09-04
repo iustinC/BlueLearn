@@ -1,17 +1,19 @@
 package com.example.iustin.bluelearn.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.iustin.bluelearn.R;
+import com.example.iustin.bluelearn.Utils;
+import com.example.iustin.bluelearn.activities.CourseActivity;
 
 import java.util.List;
 
@@ -55,7 +57,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             card_category.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(context, "Click at category " + categories.get(getAdapterPosition()), Toast.LENGTH_SHORT).show();
+                    Utils.selectedCategory = categories.get(getAdapterPosition());
+                    Intent intent = new Intent(context, CourseActivity.class);
+                    context.startActivity(intent);
                 }
             });
         }

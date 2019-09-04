@@ -3,6 +3,7 @@ package com.example.iustin.bluelearn;
 import android.os.CountDownTimer;
 
 import com.example.iustin.bluelearn.domain.AnswerType;
+import com.example.iustin.bluelearn.domain.CourseSlide;
 import com.example.iustin.bluelearn.domain.DifficultyType;
 import com.example.iustin.bluelearn.domain.Question;
 import com.example.iustin.bluelearn.fragments.QuestionFragment;
@@ -27,6 +28,8 @@ public class Utils {
     public static CountDownTimer TIMER;
 
     public static List<String> categoriesNames = new ArrayList<>();
+    public static String selectedCategory = "";
+    public static List<CourseSlide> courseSlides;
 
 
     public static boolean LOGGED = false;
