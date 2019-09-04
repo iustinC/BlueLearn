@@ -13,9 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.CategoryActivity"></activity>
+        <activity android:name=".activities.CourseActivity" />
         <activity
             android:name=".activities.ResultActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.QuizActivity"
             android:label="@string/title_activity_quiz"

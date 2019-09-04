@@ -26,6 +26,8 @@ public class Utils {
     public static int TIME_FOR_QUIZ = 20 * 60 * 1000;
     public static CountDownTimer TIMER;
 
+    public static List<String> categoriesNames = new ArrayList<>();
+
 
     public static boolean LOGGED = false;
     public static int timer = 0;

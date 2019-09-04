@@ -267,14 +267,14 @@ public class QuizActivity extends AppCompatActivity
                         .show();
 
             } else {
+                dialog.dismiss();
                 if (Utils.LOGGED) {
                     Intent myIntent = new Intent(QuizActivity.this, MenuActivity.class);
-                    dialog.dismiss();
+
                     startActivity(myIntent);
                     finish();
                 } else {
                     Intent myIntent = new Intent(QuizActivity.this, MainActivity.class);
-                    dialog.dismiss();
                     startActivity(myIntent);
                     finish();
                 }
