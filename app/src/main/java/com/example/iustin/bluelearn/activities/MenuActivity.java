@@ -46,6 +46,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void sendFeedback(View view) {
-
+        Intent intent = new  Intent(MenuActivity.this, FeedbackActivity.class);
+        startActivity(intent);
     }
 }
