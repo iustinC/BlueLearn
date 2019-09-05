@@ -33,6 +33,7 @@ public class CategoryRepository {
     }
 
     public void loadCategoriesName() {
+        Utils.categoriesNames = new ArrayList<>();
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

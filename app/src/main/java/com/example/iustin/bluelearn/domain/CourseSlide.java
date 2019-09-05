@@ -4,12 +4,13 @@ public class CourseSlide {
 
     public String statement;
 
-    public CourseSlide() {
-    }
-
     public CourseSlide(String statement) {
         this.statement = statement;
     }
+
+    public CourseSlide() {
+    }
+
 
     public String getStatement() {
         return statement;
@@ -18,5 +19,5 @@ public class CourseSlide {
     public void setStatement(String statement) {
         this.statement = statement;
     }
-
 }
+

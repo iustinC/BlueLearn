@@ -31,11 +31,21 @@ public class MenuActivity extends AppCompatActivity {
 
     public void btnQuickChallenge(View view) {
         Intent intent = new Intent(MenuActivity.this, QuizActivity.class);
+        intent.putExtra("caller", "withDifficulty");
         startActivity(intent);
     }
 
     public void btnStartCourse(View view) {
         Intent intent = new Intent(MenuActivity.this, CategoryActivity.class);
         startActivity(intent);
+    }
+
+    public void btnSendQuestion(View view) {
+        Intent intent = new  Intent(MenuActivity.this, SendEmailQuestionActivity.class);
+        startActivity(intent);
+    }
+
+    public void sendFeedback(View view) {
+
     }
 }

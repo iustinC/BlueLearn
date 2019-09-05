@@ -32,16 +32,17 @@ public class CourseRepository {
         this.courseActivity = courseActivity;
     }
 
-    public void loadCourses() {
+
+    public void loadCourse() {
+        Utils.courseSlides.clear();
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                List<CourseSlide> result = new ArrayList<>();
-                for(DataSnapshot data : dataSnapshot.child("/" + Utils.selectedCategory).getChildren()) {
-                    result.add(data.getValue(CourseSlide.class));
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.child("/" + Utils.selectedCategory).getChildren()) {
+                    Utils.courseSlides.add(dataSnapshot1.getValue(CourseSlide.class));
                 }
 
-                courseActivity.takeCourse();
+                courseActivity.loadData();
             }
 
             @Override

@@ -35,7 +35,32 @@ public class QuestionsRepository {
         this.quizActivity = quizActivity;
     }
 
+    public void loadCourseQuestions() {
+        Utils.currentQuestions = new ArrayList<>();
+        Utils.selectedValues.clear();
+        List<Question> result = new ArrayList<>();
+        database.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot data : dataSnapshot.child("/course/" + Utils.selectedCategory).getChildren()) {
+                    result.add(data.getValue(Question.class));
+                }
+                Utils.currentQuestions = result;
+                quizActivity.loadData();
+                quizActivity.stopLoadingScreen();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void loadQuestions() {
+        Utils.currentQuestions = new ArrayList<>();
+        Utils.selectedValues.clear();
         List<Question> result = new ArrayList<>();
         database.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

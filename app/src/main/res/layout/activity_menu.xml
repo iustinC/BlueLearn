@@ -6,53 +6,76 @@
     android:layout_height="match_parent"
     tools:context=".activities.MenuActivity">
 
-
-    <Button
-        android:id="@+id/btnMultiplayer"
-        android:layout_width="395dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginBottom="8dp"
-        android:text="Play multiplayer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnStartQuiz"
-        app:layout_constraintVertical_bias="0.031" />
-
     <Button
         android:id="@+id/btnStartQuiz"
-        android:layout_width="395dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:padding="20dp"
+        android:background="@drawable/button_states"
         android:text="Start Quiz"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnStartCourse" />
 
     <Button
         android:id="@+id/btnStartCourse"
-        android:layout_width="395dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Start course"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:background="@drawable/button_states"
+        android:padding="20dp"
+        android:layout_marginTop="88dp"
         android:onClick="btnStartCourse"
+        android:text="Start course"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnQuickChallenge" />
 
     <Button
         android:id="@+id/btnQuickChallenge"
-        android:layout_width="395dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
-        android:text="@string/quickChallenge"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:background="@drawable/button_states"
+        android:padding="20dp"
+        android:layout_marginTop="72dp"
         android:onClick="btnQuickChallenge"
+        android:text="@string/quickChallenge"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnSendQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="68dp"
+        android:background="@drawable/button_states"
+        android:onClick="btnSendQuestion"
+        android:padding="20dp"
+        android:text="Send Question"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStartQuiz" />
+
+    <Button
+        android:id="@+id/btnSendFeedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="4dp"
+        android:background="@drawable/button_states"
+        android:onClick="sendFeedback"
+        android:padding="20dp"
+        android:text="Send feedback"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.676"
+        app:layout_constraintStart_toEndOf="@+id/btnSendQuestion"
+        app:layout_constraintTop_toBottomOf="@+id/btnStartQuiz" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,11 +64,19 @@ public class QuizActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Choose difficulty");
-        setSupportActionBar(toolbar);
-        chooseDifficulty();
+        String caller = getIntent().getStringExtra("caller");
+        if ("withDifficulty".equals(caller)) {
+            toolbar.setTitle("Choose difficulty");
+            setSupportActionBar(toolbar);
+            chooseDifficulty();
+        } else if ("course".equals(caller)) {
+            toolbar.setTitle(Utils.selectedCategory);
+            setSupportActionBar(toolbar);
+            startQuizCourse();
         }
+    }
 
     private void chooseDifficulty() {
         DifficultyFragment difficultyFragment = new DifficultyFragment();
@@ -90,6 +98,20 @@ public class QuizActivity extends AppCompatActivity
         dialog.show();
         questionsRepository.loadQuestions();
 
+    }
+
+    public void startQuizCourse() {
+        txtTimer = (TextView) findViewById(R.id.txtTimer);
+        txtTimer.setVisibility(View.VISIBLE);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.slidingTabs);
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Loading data, please wait.");
+        dialog.setCancelable(false);
+        dialog.setInverseBackgroundForced(false);
+        dialog.show();
+        questionsRepository.loadCourseQuestions();
     }
 
     public void loadData() {

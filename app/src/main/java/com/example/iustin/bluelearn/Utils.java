@@ -6,6 +6,7 @@ import com.example.iustin.bluelearn.domain.AnswerType;
 import com.example.iustin.bluelearn.domain.CourseSlide;
 import com.example.iustin.bluelearn.domain.DifficultyType;
 import com.example.iustin.bluelearn.domain.Question;
+import com.example.iustin.bluelearn.fragments.CourseFragment;
 import com.example.iustin.bluelearn.fragments.QuestionFragment;
 
 import org.apache.commons.collections4.MultiValuedMap;
@@ -29,7 +30,9 @@ public class Utils {
 
     public static List<String> categoriesNames = new ArrayList<>();
     public static String selectedCategory = "";
-    public static List<CourseSlide> courseSlides;
+    public static List<CourseSlide> courseSlides = new ArrayList<>();
+
+    public static List<CourseFragment> courseFragments = new ArrayList<>();
 
 
     public static boolean LOGGED = false;

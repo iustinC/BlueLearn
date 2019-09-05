@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
     private View.OnClickListener quickChallengeOnClickHandler = v -> {
         Intent intent = new Intent(this, QuizActivity.class);
+        intent.putExtra("caller", "withDifficulty");
         startActivity(intent);
     };
 
