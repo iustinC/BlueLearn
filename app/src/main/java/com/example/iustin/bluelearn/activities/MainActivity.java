@@ -8,6 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.iustin.bluelearn.R;
+import com.example.iustin.bluelearn.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private View.OnClickListener quickChallengeOnClickHandler = v -> {
+        Utils.selectedCategory = "";
         Intent intent = new Intent(this, QuizActivity.class);
         intent.putExtra("caller", "withDifficulty");
         startActivity(intent);

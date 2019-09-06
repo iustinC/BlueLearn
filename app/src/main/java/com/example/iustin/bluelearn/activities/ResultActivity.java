@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.example.iustin.bluelearn.R;
 import com.example.iustin.bluelearn.Utils;
 import com.example.iustin.bluelearn.adapters.ResultGridAdapter;
 import com.example.iustin.bluelearn.domain.AnswerType;
+import com.example.iustin.bluelearn.repository.LeaderboardRepository;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 
 import java.util.concurrent.TimeUnit;
@@ -38,6 +40,11 @@ public class ResultActivity extends AppCompatActivity {
     Button btn_filter_wrong;
     Button btn_filter_no_answer;
     RecyclerView recycler_result;
+    Button btnAddToLeaderboard;
+    EditText playerName;
+    Button viewLeaderboard;
+
+    private LeaderboardRepository leaderboardRepository = new LeaderboardRepository(this);
 
     ResultGridAdapter adapter, filtered_adapter;
 
@@ -75,6 +82,41 @@ public class ResultActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+
+        playerName = findViewById(R.id.editTextPlayerName);
+        viewLeaderboard = findViewById(R.id.btnViewLeaderboard);
+
+
+        viewLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                leaderboardRepository.loadLeaderboard();
+            }
+        });
+
+        btnAddToLeaderboard = findViewById(R.id.btnAddToLeaderboard);
+        btnAddToLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!Utils.selectedCategory.isEmpty()) {
+                    if (Utils.LOGGED) {
+                        leaderboardRepository.addNewScore(String.valueOf(Utils.percentageOfResult * TimeUnit.MILLISECONDS.toSeconds(Utils.timer)) , Utils.currentUser);
+                    } else {
+                        leaderboardRepository.addNewScore(String.valueOf(Utils.percentageOfResult * TimeUnit.MILLISECONDS.toSeconds(Utils.timer)) , playerName.getText().toString());
+                    }
+                }
+            }
+        });
+
+        if (Utils.LOGGED) {
+            playerName.setVisibility(View.INVISIBLE);
+        }
+
+        if (Utils.selectedCategory.isEmpty()) {
+            playerName.setVisibility(View.INVISIBLE);
+            btnAddToLeaderboard.setVisibility(View.INVISIBLE);
+        }
+
         txt_result = (TextView) findViewById(R.id.txt_result);
         txt_right_answer = (TextView) findViewById(R.id.txt_right_answer);
         txt_timer = (TextView) findViewById(R.id.txt_time);
@@ -102,12 +144,12 @@ public class ResultActivity extends AppCompatActivity {
         btn_filter_right.setText(new StringBuilder("").append(Utils.CORRECT_ANSWER_COUNT));
         btn_filter_no_answer.setText(new StringBuilder("").append(Utils.currentQuestions.size() - Utils.selectedValues.keySet().size()));
 
-        int percent = ((Utils.CORRECT_ANSWER_COUNT * 100) / Utils.currentQuestions.size());
-        if (percent >= 90) {
+         Utils.percentageOfResult = ((Utils.CORRECT_ANSWER_COUNT * 100) / Utils.currentQuestions.size());
+        if (Utils.percentageOfResult >= 90) {
             txt_result.setText("VERY GOOD");
-        } else if (percent >= 60){
+        } else if (Utils.percentageOfResult >= 60){
             txt_result.setText("GOOD");
-        } else if (percent >= 40) {
+        } else if (Utils.percentageOfResult >= 40) {
             txt_result.setText("BAD");
         } else {
             txt_result.setText("FAIL");
@@ -224,4 +266,8 @@ public class ResultActivity extends AppCompatActivity {
                 .show();
     }
 
+    public void goToLeaderboard() {
+        Intent intent = new Intent(ResultActivity.this, LeaderboardActivity.class);
+        startActivity(intent);
+    }
 }

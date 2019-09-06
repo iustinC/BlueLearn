@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 import com.example.iustin.bluelearn.domain.AnswerType;
 import com.example.iustin.bluelearn.domain.CourseSlide;
 import com.example.iustin.bluelearn.domain.DifficultyType;
+import com.example.iustin.bluelearn.domain.LeaderboardEntry;
 import com.example.iustin.bluelearn.domain.Question;
 import com.example.iustin.bluelearn.fragments.CourseFragment;
 import com.example.iustin.bluelearn.fragments.QuestionFragment;
@@ -33,9 +34,12 @@ public class Utils {
     public static List<CourseSlide> courseSlides = new ArrayList<>();
 
     public static List<CourseFragment> courseFragments = new ArrayList<>();
+    public static List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
 
 
     public static boolean LOGGED = false;
+    public static int percentageOfResult = 0;
+    public static String currentUser = "";
     public static int timer = 0;
     public static StringBuilder data_question = new StringBuilder();
 

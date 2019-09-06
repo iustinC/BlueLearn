@@ -30,6 +30,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public void btnQuickChallenge(View view) {
+        Utils.selectedCategory = "";
         Intent intent = new Intent(MenuActivity.this, QuizActivity.class);
         intent.putExtra("caller", "withDifficulty");
         startActivity(intent);

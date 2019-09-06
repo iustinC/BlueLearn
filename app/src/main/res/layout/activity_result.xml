@@ -132,4 +132,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
 
+
+    <EditText
+        android:id="@+id/editTextPlayerName"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:hint="Enter your name"
+        android:layout_marginTop="60dp"/>
+    <Button
+        android:id="@+id/btnAddToLeaderboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add score to leaderboard"
+        android:background="@drawable/button_states"
+        android:layout_marginTop="60dp"
+        android:padding="10dp"
+        android:layout_marginLeft="100dp"/>
+
+    <Button
+        android:id="@+id/btnViewLeaderboard"
+        android:background="@drawable/button_states"
+        android:layout_width="wrap_content"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="130dp"
+        android:layout_marginTop="10dp"
+        android:text="ViewLeaderboard" />
+
+
+
 </LinearLayout>

@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 //                            } else {
                             Intent myIntent = new Intent(LoginActivity.this, MenuActivity.class);
                             Utils.LOGGED = true;
+                            Utils.currentUser = email;
                             startActivity(myIntent);
                             finish();
 //                            }

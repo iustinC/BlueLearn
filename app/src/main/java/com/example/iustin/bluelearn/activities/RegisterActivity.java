@@ -108,6 +108,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         Log.d(TAG, "Firebase sign in with google :success");
                         Intent myIntent = new Intent(RegisterActivity.this, MenuActivity.class);
                         Utils.LOGGED = true;
+                        Utils.currentUser = acct.getEmail();
                         startActivity(myIntent);
                         finish();
                     } else {
@@ -125,6 +126,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     if (task.isSuccessful()) {
                         Log.d(TAG, "Firebase facebook sign in :success");
                         Utils.LOGGED = true;
+                        Utils.currentUser = token.getUserId();
                     } else {
                         Log.w(TAG, "Firebase facebook sign in :failure", task.getException());
                     }
